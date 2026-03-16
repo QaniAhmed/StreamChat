@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState} from 'react';
 import './App.css';
+import Header from '../components/Header';
+
 
 function App() {
   const [onlineUsers] = useState([
@@ -8,46 +10,40 @@ function App() {
     { id: 3, name: 'John Doe' },
   ]);
 
-  const [messages, setMessages] = useState([
-    { id: 1, sender: 'Ahmed Ali', text: 'Hey there!', time: '10:00 AM' },
-    { id: 2, sender: 'You', text: 'Hello! How is the project going?', time: '10:01 AM' },
-  ]);
+ useEffect(() => {
+  const ws = new WebSocket("ws://localhost:3000");
 
-  const [newMessage, setNewMessage] = useState('');
-  const chatEndRef = useRef(null);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    if (!newMessage.trim()) return;
-
-    const msg = {
-      id: Date.now(),
-      sender: 'You',
-      text: newMessage,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setMessages([...messages, msg]);
-    setNewMessage('');
+  ws.onopen = () => {
+    console.log("Connected ✅");
+    ws.send(JSON.stringify({
+      type: "join",
+      username: "React"
+    }));
   };
+
+  ws.onmessage = (event) => {
+    console.log("Message:", event.data);
+  };
+
+  ws.onerror = (error) => {
+    console.error("Error:", error);
+  };
+
+  ws.onclose = () => {
+    console.log("Disconnected ❌");
+  };
+
+  return () => {
+    ws.close();
+  };
+}, []);
+
+
 
   return (
     <div className="app-container">
       {/* Header */}
-      <header className="header">
-        <div className="logo-area">
-          <div className="logo-icon">SC</div>
-          <h1 className="logo-text">StreamChat</h1>
-        </div>
-        <div className="status-indicator">
-          <span className="dot"></span>
-          <span>Online</span>
-        </div>
-      </header>
+      <Header/>
 
       <div className="main-layout">
         {/* Sidebar */}
@@ -71,27 +67,15 @@ function App() {
         {/* Chat Area */}
         <main className="chat-window">
           <div className="messages-container">
-            {messages.map((msg) => (
-              <div key={msg.id} className={`message-wrapper ${msg.sender === 'You' ? 'sent-wrapper' : ''}`}>
-                <div className="msg-info" style={{ textAlign: msg.sender === 'You' ? 'right' : 'left' }}>
-                  <strong>{msg.sender}</strong> • {msg.time}
-                </div>
-                <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'}`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-            <div ref={chatEndRef} />
+            
           </div>
 
           {/* Input */}
           <div className="input-area">
-            <form className="input-form" onSubmit={handleSendMessage}>
+            <form className="input-form" >
               <input 
                 type="text" 
                 placeholder="Type a message..." 
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
               />
               <button type="submit" className="send-button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
@@ -101,6 +85,8 @@ function App() {
             </form>
           </div>
         </main>
+
+
       </div>
     </div>
   );
