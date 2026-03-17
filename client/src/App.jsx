@@ -4,11 +4,12 @@ import Header from '../components/Header';
 
 
 function App() {
-  const [onlineUsers] = useState([
-    { id: 1, name: 'Ahmed Ali' },
-    { id: 2, name: 'Sara Smith' },
-    { id: 3, name: 'John Doe' },
-  ]);
+  // const [onlineUsers] = useState([
+  //   { id: 1, name: 'Ahmed Ali' },
+  //   { id: 2, name: 'Sara Smith' },
+  //   { id: 3, name: 'John Doe' },
+  // ]);
+  const [Online_users , setOnline_users]=useState([])
 
  useEffect(() => {
   const ws = new WebSocket("ws://localhost:3000");
@@ -22,7 +23,13 @@ function App() {
   };
 
   ws.onmessage = (event) => {
-    console.log("Message:", event.data);
+    const data = JSON.parse(event.data)
+
+    if(data.type==="online users"){
+      setOnline_users(data.users)
+    }
+
+    if(data.type ==="start"){ console.log(data.value)}
   };
 
   ws.onerror = (error) => {
@@ -52,13 +59,13 @@ function App() {
             <h3>Online Users</h3>
           </div>
           <div className="user-list">
-            {onlineUsers.map(user => (
-              <div key={user.id} className="user-item">
+            {Online_users.map(user => (
+              <div  className="user-item">
                 <div className="avatar">
-                  {user.name.charAt(0)}
+                  {user.charAt(0)}
                   <span className="online-badge"></span>
                 </div>
-                <span>{user.name}</span>
+                <span>{user}</span>
               </div>
             ))}
           </div>

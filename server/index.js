@@ -12,7 +12,13 @@ console.log("WebSocket running on ws://localhost:3000");
 
 const users = new Map();
 wss.on("connection", (ws) => {
-  ws.send("welcome from server");
+  ws.send(
+    JSON.stringify({
+      type: "start",
+      value: "welcome from server",
+    }),
+  );
+
   //default username
   let username = "Anonymous";
   // console.log("client connected to the server ");
@@ -26,8 +32,17 @@ wss.on("connection", (ws) => {
       users.set(username, ws);
 
       console.log(username + " joined ");
-      const O_users = Get_online_users();
-      console.log(O_users);
+
+      //send online users to all client
+      let online_users_list = Get_online_users();
+      wss.clients.forEach((client) => {
+        client.send(
+          JSON.stringify({
+            type: "online users",
+            users: online_users_list,
+          }),
+        );
+      });
 
       return;
     }
