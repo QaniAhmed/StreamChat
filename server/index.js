@@ -21,7 +21,6 @@ wss.on("connection", (ws) => {
 
   //default username
   let username = "Anonymous";
-  // console.log("client connected to the server ");
 
   ws.on("message", (data) => {
     const msg = JSON.parse(data.toString());
@@ -33,7 +32,7 @@ wss.on("connection", (ws) => {
 
       console.log(username + " joined ");
 
-      //send online users to all client
+      //send online users to all client when they joined
       let online_users_list = Get_online_users();
       wss.clients.forEach((client) => {
         client.send(
@@ -50,9 +49,23 @@ wss.on("connection", (ws) => {
     if (msg.type === "message") {
       fullMsg = `${username}: ${msg.text}`;
 
+      let senderName = "Unknown";
+      for (let [name, socket] of users.entries()) {
+        if (socket === ws) {
+          senderName = name;
+          break;
+        }
+      }
+
       wss.clients.forEach((client) => {
         if (client.readyState === 1 && client != ws) {
-          client.send(fullMsg);
+          client.send(
+            JSON.stringify({
+              type: "message",
+              text: msg.text,
+              sender: senderName,
+            }),
+          );
         }
       });
     }

@@ -10,8 +10,9 @@ function App() {
   //   { id: 3, name: 'John Doe' },
   // ]);
   const [Online_users , setOnline_users]=useState([])
+  const [messages,setmessages]=useState([])
 
- useEffect(() => {
+useEffect(() => {
   const ws = new WebSocket("ws://localhost:3000");
 
   ws.onopen = () => {
@@ -22,15 +23,34 @@ function App() {
     }));
   };
 
+  
+
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data)
+    console.log(data)
 
     if(data.type==="online users"){
       setOnline_users(data.users)
     }
 
     if(data.type ==="start"){ console.log(data.value)}
+
+    if(data.type==="message"){
+      console.log(data.text)
+      setmessages(prev=>[...prev,data])
+      console.log(messages)
+
+          ws.send(JSON.stringify({
+      type: "message",
+      text: "bro"
+    }));
+
+    
+    }
+
   };
+
+
 
   ws.onerror = (error) => {
     console.error("Error:", error);
@@ -74,7 +94,16 @@ function App() {
         {/* Chat Area */}
         <main className="chat-window">
           <div className="messages-container">
-            
+            {messages.map((msg) => (
+              <div  className={`message-wrapper ${msg.sender === 'You' ? 'sent-wrapper' : ''}`}>
+                <div className="msg-info" style={{ textAlign: msg.sender === 'You' ? 'right' : 'left' }}>
+                  <strong>{msg.sender}</strong> • {msg.time}
+                </div>
+                <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'}`}>
+                  {msg.text}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Input */}
