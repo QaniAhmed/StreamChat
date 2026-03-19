@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import './App.css';
 import Header from '../components/Header';
 
@@ -11,9 +11,14 @@ function App() {
   // ]);
   const [Online_users , setOnline_users]=useState([])
   const [messages,setmessages]=useState([])
+  const [userMsg,setuserMsg] = useState("")
 
+  let WsRef = useRef(null)
 useEffect(() => {
   const ws = new WebSocket("ws://localhost:3000");
+  WsRef.current=ws;
+
+  
 
   ws.onopen = () => {
     console.log("Connected ✅");
@@ -22,8 +27,6 @@ useEffect(() => {
       username: "React"
     }));
   };
-
-  
 
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data)
@@ -40,17 +43,11 @@ useEffect(() => {
       setmessages(prev=>[...prev,data])
       console.log(messages)
 
-          ws.send(JSON.stringify({
-      type: "message",
-      text: "bro"
-    }));
 
     
     }
 
   };
-
-
 
   ws.onerror = (error) => {
     console.error("Error:", error);
@@ -65,8 +62,35 @@ useEffect(() => {
   };
 }, []);
 
+function handlechange(e){
+  const {name,value} = e.target;
+  console.log(name+"  "+value)
+   setuserMsg(value)
+}
+
+function handleSumbimt(e){
+
+  e.preventDefault()
+  console.log(userMsg)
+  if(WsRef.current && WsRef.current.readyState===WebSocket.OPEN)
+    WsRef.current.send(JSON.stringify({
+      type: "message",
+      text: userMsg
+    }));
+
+    //save in messages array
+    const data = {
+            type: "message",
+              text: userMsg,
+              sender: "You",
+    }
+    setmessages(prev=>[...prev,data])
+
+    //clear the input feild ()
+    setuserMsg("")
 
 
+}
   return (
     <div className="app-container">
       {/* Header */}
@@ -108,12 +132,14 @@ useEffect(() => {
 
           {/* Input */}
           <div className="input-area">
-            <form className="input-form" >
+            <form className="input-form" onSubmit={handleSumbimt} >
               <input 
                 type="text" 
                 placeholder="Type a message..." 
+                onChange={handlechange}
+                value={userMsg}
               />
-              <button type="submit" className="send-button">
+              <button type="submit" className="send-button" >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
                   <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                 </svg>

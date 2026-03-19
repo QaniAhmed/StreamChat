@@ -24,6 +24,7 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (data) => {
     const msg = JSON.parse(data.toString());
+    console.log(msg);
 
     if (msg.type === "join") {
       username = msg.username;
