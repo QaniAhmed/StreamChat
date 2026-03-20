@@ -11,6 +11,7 @@ const wss = new WebSocketServer({ server });
 console.log("WebSocket running on ws://localhost:3000");
 
 const users = new Map();
+let senderName = "Unknown";
 wss.on("connection", (ws) => {
   ws.send(
     JSON.stringify({
@@ -50,7 +51,6 @@ wss.on("connection", (ws) => {
     if (msg.type === "message") {
       fullMsg = `${username}: ${msg.text}`;
 
-      let senderName = "Unknown";
       for (let [name, socket] of users.entries()) {
         if (socket === ws) {
           senderName = name;
@@ -65,6 +65,27 @@ wss.on("connection", (ws) => {
               type: "message",
               text: msg.text,
               sender: senderName,
+            }),
+          );
+        }
+      });
+    }
+
+    if (msg.type === "typing") {
+      for (let [name, socket] of users.entries()) {
+        if (socket === ws) {
+          senderName = name;
+          break;
+        }
+      }
+
+      wss.clients.forEach((client) => {
+        if (client.readyState === 1 && client != ws) {
+          client.send(
+            JSON.stringify({
+              type: "user_typing",
+              username: senderName,
+              isTyping: true,
             }),
           );
         }
