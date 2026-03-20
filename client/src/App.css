@@ -252,3 +252,19 @@
 .input-form input {
   flex: 1;
 }
+
+.emoji-wrapper {
+  position: relative; 
+  display: inline-block;
+}
+
+.emoji-picker-container {
+  position: absolute; 
+  bottom: 100%;       
+  left: 0;
+  margin-bottom: 10px; 
+  z-index: 1000;       
+  
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
