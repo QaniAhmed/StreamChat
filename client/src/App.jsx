@@ -13,6 +13,9 @@ function App() {
   const [Online_users , setOnline_users]=useState([])
   const [messages,setmessages]=useState([])
   const [userMsg,setuserMsg] = useState("")
+  const [isTyping,setisTyping]=useState(false)
+  const [typingUser,settypingUser]=useState("")
+  const typingTimeoutRef = useRef(null)
 
   let WsRef = useRef(null)
 useEffect(() => {
@@ -43,9 +46,22 @@ useEffect(() => {
       console.log(data.text)
       setmessages(prev=>[...prev,data])
       console.log(messages)
-
     }
 
+    if(data.type==="user_typing"){
+      settypingUser(data.username) 
+      setisTyping(true)
+
+      //distroy,if old timer work 
+      if(typingTimeoutRef.current){
+        clearTimeout(typingTimeoutRef.current);
+      }
+      //start new one 
+      typingTimeoutRef.current = setTimeout(() => {
+        setisTyping(false)
+        
+      }, 3000);
+    }
   };
 
   ws.onerror = (error) => {
@@ -97,6 +113,8 @@ function TrackEmoji(value){
   console.log(value)
   
 }
+
+
   return (
     <div className="app-container">
       {/* Header */}
@@ -135,6 +153,20 @@ function TrackEmoji(value){
               </div>
             ))}
           </div>
+
+
+          {/* typing-indicator  */}
+
+          {isTyping && (
+    <div className="typing-indicator">
+      <div className="typing-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span className="typing-text">{typingUser} is typing...</span>
+    </div>
+  )}
 
           {/* Input */}
           <div className="input-area">
