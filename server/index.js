@@ -12,6 +12,8 @@ console.log("WebSocket running on ws://localhost:3000");
 
 const users = new Map();
 let senderName = "Unknown";
+let fullMsg;
+
 wss.on("connection", (ws) => {
   ws.send(
     JSON.stringify({
@@ -47,7 +49,7 @@ wss.on("connection", (ws) => {
 
       return;
     }
-    let fullMsg;
+
     if (msg.type === "message") {
       fullMsg = `${username}: ${msg.text}`;
 

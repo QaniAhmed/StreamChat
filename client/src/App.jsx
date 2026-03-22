@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef} from 'react';
 import './App.css';
 import Header from '../components/Header';
 import Emoji from '../components/Emoji';
+import RecordeBtn from '../components/RecordeBtn';
 
 
 function App() {
@@ -18,6 +19,9 @@ function App() {
   const typingTimeoutRef = useRef(null)
 
   let WsRef = useRef(null)
+
+
+
 useEffect(() => {
   const ws = new WebSocket("ws://localhost:3000");
   WsRef.current=ws;
@@ -59,7 +63,6 @@ useEffect(() => {
       //start new one 
       typingTimeoutRef.current = setTimeout(() => {
         setisTyping(false)
-        
       }, 3000);
     }
   };
@@ -82,6 +85,8 @@ function handlechange(e){
   console.log(name+"  "+value)
    setuserMsg(value)
    console.log("usermsg"+userMsg)
+  
+
 }
 
 function handleSumbimt(e){
@@ -113,6 +118,7 @@ function TrackEmoji(value){
   console.log(value)
   
 }
+
 
 
   return (
@@ -171,9 +177,10 @@ function TrackEmoji(value){
           {/* Input */}
           <div className="input-area">
             <form className="input-form" onSubmit={handleSumbimt} >
-
+              
               {/* emoji-button  */}
               <Emoji onaction={TrackEmoji}/>
+              
 
               
               <input 
@@ -182,11 +189,14 @@ function TrackEmoji(value){
                 onChange={handlechange}
                 value={userMsg}
               />
+
+               <RecordeBtn/>
               <button type="submit" className="send-button" >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
                   <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                 </svg>
               </button>
+             
             </form>
           </div>
         </main>
