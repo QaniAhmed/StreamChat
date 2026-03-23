@@ -1,14 +1,52 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 function RecordeBtn() {
     const [isRecording,setisRecording]=useState(false)
+    const StateRef= useRef(false)
+    const mediaRecorderRef=useRef(null)
+    const audioChunksRef=useRef([])
+    async function StartRecoding(){
+        try{
+
+            const stream = await navigator.mediaDevices.getUserMedia({audio:true})
+            console.log("Audio work successfully")
+
+            const Recorder = new MediaRecorder(stream);
+
+            Recorder.ondataavailable= (event)=>{
+                if (event.data.size>0){
+                    audioChunksRef.current.push(event.data)
+                }
+            }
+
+            Recorder.start();
+            //to called later in stop function
+            mediaRecorderRef.current= Recorder;
+
+
+            setisRecording(true)
+            console.log("Recording started...")
+        }
+        catch(err){console.log("Error accessing microphone:"+err)}
+
+    }
+
+    function StopRecording(){
+        
+
+    }
+    function handleClick(){
+     StartRecoding()
+
+
+    }
     
   return (
     <button 
   type="button" 
   className={`mic-button ${isRecording ? 'recording' : ''}`}
   title="Record Voice"
-  // هنا ستضع onClick أو onMouseDown حسب رغبتك في اللوجيك
+  onClick={handleClick}
 >
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
