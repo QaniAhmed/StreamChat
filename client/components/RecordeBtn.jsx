@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 function RecordeBtn() {
     const [isRecording,setisRecording]=useState(false)
     const StateRef= useRef(false)
-    const mediaRecorderRef=useRef(null)
+    const RecorderRef=useRef(null)
     const audioChunksRef=useRef([])
     async function StartRecoding(){
         try{
@@ -21,7 +21,7 @@ function RecordeBtn() {
 
             Recorder.start();
             //to called later in stop function
-            mediaRecorderRef.current= Recorder;
+            RecorderRef.current= Recorder;
 
 
             setisRecording(true)
@@ -32,11 +32,31 @@ function RecordeBtn() {
     }
 
     function StopRecording(){
-        
+        //check if it's recording 
+        if(RecorderRef.current && isRecording){
+            RecorderRef.current.stop();
 
+            RecorderRef.current.onstop=()=>{
+                const audioBlob= new Blob(audioChunksRef.current,{ type: 'audio/webm' })
+                console.log("Audio Size:"+audioBlob.size)
+            }
+
+            //turn off in browser
+            if (RecorderRef.current.stream) {
+                RecorderRef.current.stream.getTracks().forEach(track => track.stop());
+            }
+            setisRecording(false);
+
+            
+        }
     }
+
+
     function handleClick(){
-     StartRecoding()
+        if(!isRecording)
+            StartRecoding()
+        else
+            StopRecording()
 
 
     }
