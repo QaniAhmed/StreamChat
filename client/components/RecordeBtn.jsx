@@ -50,7 +50,6 @@ function RecordeBtn() {
                 RecorderRef.current.stream.getTracks().forEach(track => track.stop());
             }
             setisRecording(false);
-            sendVoiceMessage()
 
             
         }
