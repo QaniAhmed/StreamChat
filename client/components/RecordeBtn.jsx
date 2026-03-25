@@ -5,6 +5,8 @@ function RecordeBtn() {
     const StateRef= useRef(false)
     const RecorderRef=useRef(null)
     const audioChunksRef=useRef([])
+
+
     async function StartRecoding(){
         try{
 
@@ -38,7 +40,9 @@ function RecordeBtn() {
 
             RecorderRef.current.onstop=()=>{
                 const audioBlob= new Blob(audioChunksRef.current,{ type: 'audio/webm' })
+
                 console.log("Audio Size:"+audioBlob.size)
+                sendVoiceMessage(audioBlob)
             }
 
             //turn off in browser
@@ -46,9 +50,20 @@ function RecordeBtn() {
                 RecorderRef.current.stream.getTracks().forEach(track => track.stop());
             }
             setisRecording(false);
+            sendVoiceMessage()
 
             
         }
+    }
+
+    function sendVoiceMessage(blob){
+        const reader = new FileReader();
+        reader.readAsDataURL(blob)
+        reader.onload=()=>{
+            const base64audio = reader.result;
+            console.log(base64audio.substring(0,50))
+        }
+
     }
 
 
