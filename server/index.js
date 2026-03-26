@@ -101,6 +101,28 @@ wss.on("connection", (ws) => {
         Targeted_user.send(msg.text);
       }
     }
+
+    if (msg.type === "voice") {
+      //find the sender
+      for (let [name, socket] of users.entries()) {
+        if (socket === ws) {
+          senderName = name;
+          break;
+        }
+      }
+      //send to all
+      wss.clients.forEach((client) => {
+        if (client.readyState === 1) {
+          client.send(
+            JSON.stringify({
+              type: "voice",
+              audio: msg.data,
+              sender: senderName,
+            }),
+          );
+        }
+      });
+    }
   });
 });
 

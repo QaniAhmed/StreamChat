@@ -190,7 +190,7 @@ function TrackEmoji(value){
                 value={userMsg}
               />
 
-               <RecordeBtn/>
+               <RecordeBtn ws={WsRef}/>
               <button type="submit" className="send-button" >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
                   <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />

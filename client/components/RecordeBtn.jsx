@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-function RecordeBtn() {
+function RecordeBtn(props) {
     const [isRecording,setisRecording]=useState(false)
     const StateRef= useRef(false)
     const RecorderRef=useRef(null)
@@ -61,7 +61,12 @@ function RecordeBtn() {
         reader.onload=()=>{
             const base64audio = reader.result;
             console.log(base64audio.substring(0,50))
+            props.ws.current.send(JSON.stringify({
+            type:"voice",
+            data:base64audio
+        }))
         }
+    
 
     }
 
