@@ -358,3 +358,10 @@
 .input-form {
   gap: 5px;
 }
+
+
+.audio-player {
+  max-width: 200px; 
+  height: 35px;
+  margin-top: 5px;
+}

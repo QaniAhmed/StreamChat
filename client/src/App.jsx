@@ -65,6 +65,11 @@ useEffect(() => {
         setisTyping(false)
       }, 3000);
     }
+
+    if(data.type==="voice"){
+      setmessages(prev=>[...prev,data])
+      console.log(messages)
+    }
   };
 
   ws.onerror = (error) => {
@@ -154,7 +159,14 @@ function TrackEmoji(value){
                   <strong>{msg.sender}</strong> • {msg.time}
                 </div>
                 <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'}`}>
-                  {msg.text}
+                  
+                  {msg.type === "voice" ? (
+            <div className="voice-message-container">
+              <audio src={msg.audio} controls className="audio-player" />
+            </div>
+          ) : (
+            msg.text
+          )}
                 </div>
               </div>
             ))}
