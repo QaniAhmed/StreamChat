@@ -283,7 +283,7 @@
   color: #6366f1;
   border-top: 1px solid #f3f4f6;
   position: absolute;
-  bottom: 70px; /* فوق الـ input-area مباشرة */
+  bottom: 70px;
   width: 100%;
   animation: fadeIn 0.3s ease;
 }
@@ -360,8 +360,46 @@
 }
 
 
-.audio-player {
-  max-width: 200px; 
+.simple-audio-player {
+  height: 35px; 
+  width: 200px;  
+  filter: grayscale(1) contrast(1.2); 
+  border-radius: 20px;
+  outline: none;
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 18px;
+}
+
+
+
+
+.waveform-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white; 
+  padding: 10px 15px;
+  border-radius: 25px;
+  min-width: 250px;
+}
+
+.play-btn-circle {
+  width: 35px;
   height: 35px;
-  margin-top: 5px;
+  border-radius: 50%;
+  border: 2px solid #0056b3;
+  background: white;
+  color: #0056b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.wave-div {
+  flex-grow: 1; 
 }

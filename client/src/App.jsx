@@ -3,6 +3,7 @@ import './App.css';
 import Header from '../components/Header';
 import Emoji from '../components/Emoji';
 import RecordeBtn from '../components/RecordeBtn';
+import VoiceWave from '../components/VoiceWave';
 
 
 function App() {
@@ -161,9 +162,10 @@ function TrackEmoji(value){
                 <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'}`}>
                   
                   {msg.type === "voice" ? (
-            <div className="voice-message-container">
-              <audio src={msg.audio} controls className="audio-player" />
-            </div>
+            // <div className="voice-message-container">
+            //   <audio src={msg.audio} controls className="simple-audio-player" />
+            // </div>
+            <VoiceWave audioSrc={msg.audio} />
           ) : (
             msg.text
           )}
