@@ -4,14 +4,11 @@ import Header from '../components/Header';
 import Emoji from '../components/Emoji';
 import RecordeBtn from '../components/RecordeBtn';
 import VoiceWave from '../components/VoiceWave';
+import ImageBtn from '../components/ImageBtn';
 
 
 function App() {
-  // const [onlineUsers] = useState([
-  //   { id: 1, name: 'Ahmed Ali' },
-  //   { id: 2, name: 'Sara Smith' },
-  //   { id: 3, name: 'John Doe' },
-  // ]);
+  
   const [Online_users , setOnline_users]=useState([])
   const [messages,setmessages]=useState([])
   const [userMsg,setuserMsg] = useState("")
@@ -162,9 +159,7 @@ function TrackEmoji(value){
                 <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'}`}>
                   
                   {msg.type === "voice" ? (
-            // <div className="voice-message-container">
-            //   <audio src={msg.audio} controls className="simple-audio-player" />
-            // </div>
+     
             <VoiceWave audioSrc={msg.audio} />
           ) : (
             msg.text
@@ -194,6 +189,8 @@ function TrackEmoji(value){
               
               {/* emoji-button  */}
               <Emoji onaction={TrackEmoji}/>
+
+              <ImageBtn/>
               
 
               
