@@ -68,6 +68,10 @@ useEffect(() => {
       setmessages(prev=>[...prev,data])
       console.log(messages)
     }
+    if(data.type==="image"){
+       setmessages(prev=>[...prev,data])
+
+    }
   };
 
   ws.onerror = (error) => {
@@ -150,24 +154,34 @@ function TrackEmoji(value){
 
         {/* Chat Area */}
         <main className="chat-window">
-          <div className="messages-container">
-            {messages.map((msg) => (
-              <div  className={`message-wrapper ${msg.sender === 'You' ? 'sent-wrapper' : ''}`}>
-                <div className="msg-info" style={{ textAlign: msg.sender === 'You' ? 'right' : 'left' }}>
-                  <strong>{msg.sender}</strong> • {msg.time}
-                </div>
-                <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'}`}>
-                  
-                  {msg.type === "voice" ? (
-     
+  <div className="messages-container">
+    {messages.map((msg, index) => (
+      <div key={index} className={`message-wrapper ${msg.sender === 'You' ? 'sent-wrapper' : ''}`}>
+        <div className="msg-info" style={{ textAlign: msg.sender === 'You' ? 'right' : 'left' }}>
+          <strong>{msg.sender}</strong> • {msg.time}
+        </div>
+        
+        <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'} ${msg.type === 'image' ? 'image-bubble' : ''}`}>
+          
+          {msg.type === "voice" ? (
             <VoiceWave audioSrc={msg.audio} />
+          ) : msg.type === "image" ? (
+            <div className="image-container">
+              <img 
+                src={msg.data} 
+                alt="sent-file" 
+                className="chat-image" 
+                onClick={() => window.open(msg.data, '_self')} 
+              />
+            </div>
           ) : (
             msg.text
           )}
-                </div>
-              </div>
-            ))}
-          </div>
+          
+        </div>
+      </div>
+    ))}
+  </div>
 
 
           {/* typing-indicator  */}
@@ -190,7 +204,7 @@ function TrackEmoji(value){
               {/* emoji-button  */}
               <Emoji onaction={TrackEmoji}/>
 
-              <ImageBtn/>
+              <ImageBtn ws={WsRef}/>
               
 
               

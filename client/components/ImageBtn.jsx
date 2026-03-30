@@ -1,10 +1,25 @@
 import React from 'react'
 import './ImageBtn.css'
 
-function ImageBtn() {
+function ImageBtn(props) {
 
-    function handleImageChange(){
-        console.log("Done")
+    function handleImageChange(e){
+        const {files}= e.target
+
+        //read the image 
+        const reader = new FileReader()
+        reader.readAsDataURL(files[0])
+        reader.onload=()=>{
+          const Imageb64 = reader.result
+          console.log(Imageb64.substring(0,50))
+          
+          //send the msg
+          props.ws.current.send(JSON.stringify({
+          type:"image",
+            image:Imageb64
+        }))
+        }
+        
 
     }
   return (

@@ -2,12 +2,13 @@ import express from "express";
 import http from "http";
 import { text } from "stream/consumers";
 import { WebSocketServer } from "ws";
+import { ResizedBase64 } from "./utils/compressImage.js";
 //create server
 const app = express();
 
 const server = http.createServer(app);
 
-const wss = new WebSocketServer({ server });
+const wss = new WebSocketServer({ server, maxPayload: 1024 * 1024 * 10 });
 console.log("WebSocket running on ws://localhost:3000");
 
 const users = new Map();
@@ -25,7 +26,7 @@ wss.on("connection", (ws) => {
   //default username
   let username = "Anonymous";
 
-  ws.on("message", (data) => {
+  ws.on("message", async (data) => {
     const msg = JSON.parse(data.toString());
     console.log(msg);
 
@@ -117,6 +118,33 @@ wss.on("connection", (ws) => {
             JSON.stringify({
               type: "voice",
               audio: msg.data,
+              sender: senderName,
+            }),
+          );
+        }
+      });
+    }
+
+    if (msg.type === "image") {
+      //find the sender
+      for (let [name, socket] of users.entries()) {
+        if (socket === ws) {
+          senderName = name;
+          break;
+        }
+      }
+
+      //sharp the image
+
+      const ResizedImage = await ResizedBase64(msg.image);
+
+      //send to all clients
+      wss.clients.forEach((client) => {
+        if (client.readyState === 1) {
+          ws.send(
+            JSON.stringify({
+              type: "image",
+              data: ResizedImage,
               sender: senderName,
             }),
           );
