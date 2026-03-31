@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
+import './VoiceWave.css'
 
 const VoiceWave = ({ audioSrc }) => {
   const containerRef = useRef(null);

@@ -1,0 +1,57 @@
+.image-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  cursor: pointer;
+  color: #5f6368; 
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.image-upload-label:hover {
+  background-color: #f1f3f4; 
+  color: #1a73e8; 
+}
+
+.input-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: white;
+  border-top: 1px solid #eee;
+}
+
+.image-bubble {
+  padding: 4px !important; 
+  max-width: 250px;
+  overflow: hidden;
+}
+
+.chat-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover; 
+  border-radius: 12px;
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+  display: block;
+}
+
+.chat-image:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.full-screen-image {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: zoom-out;
+}

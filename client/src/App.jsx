@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef} from 'react';
 import './App.css';
-import Header from '../components/Header';
-import Emoji from '../components/Emoji';
-import RecordeBtn from '../components/RecordeBtn';
-import VoiceWave from '../components/VoiceWave';
-import ImageBtn from '../components/ImageBtn';
+import Header from '../components/Header/Header';
+import Emoji from '../components/Emoji/Emoji';
+import RecordeBtn from '../components/RecordBtn/RecordeBtn';
+import VoiceWave from '../components/VoiceWave/VoiceWave';
+import ImageBtn from '../components/ImageBtn/ImageBtn';
 
 
 function App() {

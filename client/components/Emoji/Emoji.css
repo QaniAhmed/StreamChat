@@ -1,0 +1,23 @@
+.emoji-button {
+  background: none;
+  border: none;
+  color: #6366f1; 
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.emoji-button:hover {
+  background-color: #f3f4f6;
+  color: #4338ca;
+  transform: scale(1.1);
+}
+
+.emoji-button svg {
+  width: 26px;
+  height: 26px;
+}
