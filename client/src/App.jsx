@@ -47,7 +47,7 @@ useEffect(() => {
     if(data.type==="message"){
       console.log(data.text)
       setmessages(prev=>[...prev,data])
-      console.log(messages)
+      console.log(data)
     }
 
     if(data.type==="user_typing"){
