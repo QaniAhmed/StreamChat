@@ -3,9 +3,16 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import { createBrowserRouter,RouterProvider } from "react-router";
 import JoinScreen from '../pages/JoinScreen.jsx';
+import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute.jsx';
 
 const router =createBrowserRouter([
-   { path: "/", element: <App /> },
+   { path: "/", 
+    element:
+   <ProtectedRoute>
+          <App />
+     </ProtectedRoute>
+  
+  },
    {path:"/home",element:<JoinScreen/>}
 
 ])
