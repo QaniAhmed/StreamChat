@@ -3,6 +3,7 @@ import http from "http";
 import { text } from "stream/consumers";
 import { WebSocketServer } from "ws";
 import { ResizedBase64 } from "./utils/compressImage.js";
+import { DB } from "./DB/db.js";
 //create server
 const app = express();
 
