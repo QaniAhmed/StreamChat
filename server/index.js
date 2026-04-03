@@ -4,6 +4,7 @@ import { text } from "stream/consumers";
 import { WebSocketServer } from "ws";
 import { ResizedBase64 } from "./utils/compressImage.js";
 import { DB } from "./DB/db.js";
+import bodyParser from "body-parser";
 //create server
 const app = express();
 
@@ -11,6 +12,8 @@ const server = http.createServer(app);
 
 const wss = new WebSocketServer({ server, maxPayload: 1024 * 1024 * 10 });
 console.log("WebSocket running on ws://localhost:3000");
+
+app.use(bodyParser.json());
 
 const users = new Map();
 let senderName = "Unknown";
@@ -166,6 +169,40 @@ function Get_online_users() {
   });
   return list;
 }
+
+app.post("/join", async (req, res) => {
+  const user_name = req.body.user_name;
+  //test connection
+  const { data, error } = await DB.from("users").select("*", {
+    count: "exact",
+    head: true,
+  });
+
+  if (error) {
+    console.error("wrong to connect to DB", error.message);
+    return res
+      .status(400)
+      .json({ message: "Error: can't create the username" });
+  } else {
+    console.log("connection successfully");
+    //insert the users to DB
+    const { data, error } = await DB.from("users")
+      .insert({
+        username: user_name,
+      })
+      .select();
+    if (error) {
+      console.error("Error to insert", error.message);
+      return res
+        .status(400)
+        .json({ message: "Error: can't create the username" }, error);
+    }
+    console.log(data);
+    res
+      .status(201)
+      .json({ message: "created succefully", username: user_name });
+  }
+});
 
 server.listen(3000, () => {
   console.log("Listening. . .");
