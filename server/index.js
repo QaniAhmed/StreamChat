@@ -69,12 +69,13 @@ wss.on("connection", (ws) => {
       }
 
       wss.clients.forEach((client) => {
-        if (client.readyState === 1 && client != ws) {
+        if (client.readyState === 1) {
           client.send(
             JSON.stringify({
               type: "message",
               text: msg.text,
               sender: senderName,
+              user_id: msg.sender_id,
             }),
           );
         }

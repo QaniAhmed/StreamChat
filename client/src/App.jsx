@@ -16,6 +16,8 @@ function App() {
   const [typingUser,settypingUser]=useState("")
   const typingTimeoutRef = useRef(null)
 
+  const MyId=localStorage.getItem("userId");
+
   let WsRef = useRef(null)
 
 
@@ -48,6 +50,7 @@ useEffect(() => {
       console.log(data.text)
       setmessages(prev=>[...prev,data])
       console.log(data)
+      
     }
 
     if(data.type==="user_typing"){
@@ -89,9 +92,9 @@ useEffect(() => {
 
 function handlechange(e){
   const {name,value} = e.target;
-  console.log(name+"  "+value)
+  // console.log(name+"  "+value)
    setuserMsg(value)
-   console.log("usermsg"+userMsg)
+  //  console.log("usermsg"+userMsg)
   
 
 }
@@ -103,16 +106,18 @@ function handleSumbimt(e){
   if(WsRef.current && WsRef.current.readyState===WebSocket.OPEN)
     WsRef.current.send(JSON.stringify({
       type: "message",
-      text: userMsg
+      text: userMsg,
+      sender_id:localStorage.getItem("userId"),
+      sender_name:localStorage.getItem("name"),
     }));
 
-    //save in messages array
-    const data = {
-            type: "message",
-              text: userMsg,
-              sender: "You",
-    }
-    setmessages(prev=>[...prev,data])
+    // //save in messages array
+    // const data = {
+    //         type: "message",
+    //           text: userMsg,
+    //           sender: localStorage.getItem("userId"),
+    // }
+    // setmessages(prev=>[...prev,data])
 
     //clear the input feild ()
     setuserMsg("")
@@ -156,12 +161,12 @@ function TrackEmoji(value){
         <main className="chat-window">
   <div className="messages-container">
     {messages.map((msg, index) => (
-      <div key={index} className={`message-wrapper ${msg.sender === 'You' ? 'sent-wrapper' : ''}`}>
-        <div className="msg-info" style={{ textAlign: msg.sender === 'You' ? 'right' : 'left' }}>
-          <strong>{msg.sender}</strong> • {msg.time}
+      <div key={index} className={`message-wrapper ${msg.user_id == MyId ? 'sent-wrapper' : ''}`}>
+        <div className="msg-info" style={{ textAlign: msg.user_id == MyId ? 'right' : 'left' }}>
+           • {msg.time} <strong>{msg.sender}</strong>
         </div>
         
-        <div className={`message-bubble ${msg.sender === 'You' ? 'sent' : 'received'} ${msg.type === 'image' ? 'image-bubble' : ''}`}>
+        <div className={`message-bubble ${msg.user_id == MyId ? 'sent' : 'received'} ${msg.type === 'image' ? 'image-bubble' : ''}`}>
           
           {msg.type === "voice" ? (
             <VoiceWave audioSrc={msg.audio} />
