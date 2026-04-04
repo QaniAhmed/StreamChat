@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './JoinScreen.css';
 import axios from "axios"
 import { useNavigate } from 'react-router';
 
 const JoinScreen = () => {
+    useEffect(()=>{ if(localStorage.getItem('name'))
+        Navigate('/')},[])
     const [username,setusername]= useState("")
     const [loading, setLoading] = useState(false); 
     const Navigate = useNavigate()
+    
     function handleChange(e){
         const {name,value}= e.target
         console.log(name, " ",value)
@@ -15,6 +18,7 @@ const JoinScreen = () => {
     }
     async function handleSubmit(e) {
     e.preventDefault();
+   
     
     if (!username.trim()) return alert("Please enter a name"); 
 

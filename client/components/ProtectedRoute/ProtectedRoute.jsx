@@ -6,7 +6,7 @@ import { Navigate } from "react-router";
 function ProtectedRoute({children}) {
     const name = localStorage.getItem('name');
     if(!name){
-        return <Navigate to="/home" />
+        return <Navigate to="/join" />
     }
     
   return children
