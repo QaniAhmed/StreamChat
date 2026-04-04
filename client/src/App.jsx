@@ -30,7 +30,7 @@ useEffect(() => {
     console.log("Connected ✅");
     ws.send(JSON.stringify({
       type: "join",
-      username: "React"
+      username: localStorage.getItem("name")
     }));
   };
 

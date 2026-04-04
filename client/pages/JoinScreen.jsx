@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './JoinScreen.css';
 import axios from "axios"
+import { useNavigate } from 'react-router';
 
 const JoinScreen = () => {
     const [username,setusername]= useState("")
     const [loading, setLoading] = useState(false); 
+    const Navigate = useNavigate()
     function handleChange(e){
         const {name,value}= e.target
         console.log(name, " ",value)
@@ -26,6 +28,7 @@ const JoinScreen = () => {
         
         localStorage.setItem("name", response.data.username);
         localStorage.setItem("userId", response.data.id);
+        Navigate("/")
         
     } catch (error) {
         if (error.response && error.response.status === 409) {

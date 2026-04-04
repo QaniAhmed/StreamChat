@@ -2,5 +2,5 @@ POST http://localhost:3000/join HTTP/1.1
 Content-Type : application/json
 
 {
-    "user_name": "almualim00"
+    "user_name": ""
 }
