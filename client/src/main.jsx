@@ -13,7 +13,7 @@ const router =createBrowserRouter([
      </ProtectedRoute>
   
   },
-   {path:"/home",element:<JoinScreen/>}
+   {path:"/join",element:<JoinScreen/>}
 
 ])
 createRoot(document.getElementById('root')).render(

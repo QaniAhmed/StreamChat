@@ -6,6 +6,7 @@ import { ResizedBase64 } from "./utils/compressImage.js";
 import { DB } from "./DB/db.js";
 import bodyParser from "body-parser";
 import join from "./routes/join.js";
+import cors from "cors";
 //create server
 const app = express();
 
@@ -15,6 +16,7 @@ const wss = new WebSocketServer({ server, maxPayload: 1024 * 1024 * 10 });
 console.log("WebSocket running on ws://localhost:3000");
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const users = new Map();
 let senderName = "Unknown";
