@@ -145,7 +145,7 @@ wss.on("connection", (ws) => {
       //sharp the image
 
       const ResizedImage = await ResizedBase64(msg.image);
-
+      console.log(msg.sender_id + "******************");
       //send to all clients
       wss.clients.forEach((client) => {
         if (client.readyState === 1) {
@@ -154,6 +154,7 @@ wss.on("connection", (ws) => {
               type: "image",
               data: ResizedImage,
               sender: senderName,
+              user_id: msg.sender_id,
             }),
           );
         }

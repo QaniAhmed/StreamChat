@@ -16,7 +16,8 @@ function ImageBtn(props) {
           //send the msg
           props.ws.current.send(JSON.stringify({
           type:"image",
-            image:Imageb64
+            image:Imageb64,
+            sender_id:localStorage.getItem("userId")
         }))
         }
         

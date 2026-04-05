@@ -72,6 +72,8 @@ useEffect(() => {
       console.log(messages)
     }
     if(data.type==="image"){
+      console.log(data)
+      console.log(data.text)
        setmessages(prev=>[...prev,data])
 
     }
