@@ -127,6 +127,7 @@ wss.on("connection", (ws) => {
               type: "voice",
               audio: msg.data,
               sender: senderName,
+              user_id: msg.sender_id,
             }),
           );
         }

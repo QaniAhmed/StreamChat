@@ -64,7 +64,8 @@ function RecordeBtn(props) {
             console.log(base64audio.substring(0,50))
             props.ws.current.send(JSON.stringify({
             type:"voice",
-            data:base64audio
+            data:base64audio,
+             sender_id:localStorage.getItem("userId")
         }))
         }
     
