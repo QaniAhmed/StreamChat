@@ -32,16 +32,15 @@ StreamChat is a high-performance, full-stack messaging application designed for 
 | **Media APIs**  | MediaRecorder API, FileReader API, Navigator MediaDevices |
 | **Persistence** | PostgreSQL (Supabase), Browser LocalStorage               |
 
-🚀 Getting Started
+## 🚀 Getting Started
 
-1. Server Environment
-   Bash
-   cd server
-   npm install
-   node index.js
+### 1. Server Environment
+```bash
+cd server
+npm install
+node index.js
 
 2. Client Environment
-   Bash
-   cd client
-   npm install
-   npm run dev
+cd client
+npm install
+npm run dev
